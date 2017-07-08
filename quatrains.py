@@ -49,6 +49,9 @@ word_index = tokenizer.word_index
 index_word = {index: word for word, index in word_index.items()}
 num_distinct_words = len(word_index)
 
+# Weight words in the loss function such that more common words are given more importance.
+# The weight here is, somewhat arbitrarily, the square root of the count.
+# This _tends_ to make the output a little more normal-sounding.
 word_index_weights = {word_index[word]: math.sqrt(count) for word, count in tokenizer.word_counts.items()}
 word_index_weights[0] = 1.0
 
