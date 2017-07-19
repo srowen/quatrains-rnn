@@ -15,6 +15,7 @@ unzip glove.6B.zip
 The following Python packages must be installed in the Python 3 environment you use:
 
 - `tensorflow` (or `tensorflow-gpu`)
+- `tensorboard`
 - `keras`
 - `numpy`
 
