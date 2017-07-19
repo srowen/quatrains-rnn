@@ -1,6 +1,12 @@
 # See also Chapters 6, 8 of "Deep Learning with Python" by Francois Chollet (Manning)
 # https://www.manning.com/books/deep-learning-with-python
 
+# Cloudera Data Science Workbench: install tensorflow and keras if not already.
+# Install tensorflow-gpu instead if using GPUs.
+'''
+!pip3 install tensorflow keras
+'''
+
 import math
 import numpy as np
 import random
