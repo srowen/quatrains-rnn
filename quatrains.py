@@ -4,7 +4,7 @@
 # Cloudera Data Science Workbench: install tensorflow and keras if not already.
 # Install tensorflow-gpu instead if using GPUs.
 '''
-!pip3 install tensorflow keras
+!pip3 install tensorflow tensorboard keras
 '''
 
 import math
@@ -13,6 +13,7 @@ import random
 import tensorflow as tf
 
 from keras import backend as K
+from keras.callbacks import TensorBoard
 from keras.layers import Dense, Embedding, GRU
 from keras.models import Sequential
 from keras.optimizers import RMSprop
@@ -107,16 +108,17 @@ model = Sequential()
 with tf.device(device):
     # Embedding layer converts words (indices) into embeddings
     # The actual embedding matrix is set below
-    model.add(Embedding(num_distinct_words + 1, embedding_dim, input_length=phrase_len))
+    model.add(Embedding(num_distinct_words + 1, embedding_dim, input_length=phrase_len, name="embedding"))
     # Learn a recurrent model of sequences of words with a Gated Recurrent Unit (GRU)
     model.add(GRU(gru_dim,
+                  name="GRU",
                   dropout=dropout,
                   recurrent_dropout=dropout,
                   kernel_regularizer=l2(regularization),
                   bias_regularizer=l2(regularization),
                   recurrent_regularizer=l2(regularization)))
     # Predict one of the possible words (or end) with standard dense layer plus softmax activation
-    model.add(Dense(num_distinct_words + 1, activation='softmax'))
+    model.add(Dense(num_distinct_words + 1, name="dense", activation='softmax'))
 
 # Actually set the weights for the embedding
 # Note that this is not 'frozen' and is left trainable
@@ -148,6 +150,8 @@ next_word_embeddings_val = next_word_embeddings[val_indices]
 for run in range(0, 1000):
     print('Run {}'.format(run))
 
+    tensorboard = TensorBoard(log_dir="logs/{}".format(run), write_graph=True, histogram_freq=5)
+
     # Train for just a few epochs
     model.fit(phrases_train,
               next_word_embeddings_train,
@@ -156,7 +160,8 @@ for run in range(0, 1000):
               batch_size=batch_size,
               shuffle=True,
               validation_data=(phrases_val, next_word_embeddings_val),
-              verbose=2)
+              verbose=2,
+              callbacks=[tensorboard])
 
     # Generate a few random outputs from the model so far
     print()
