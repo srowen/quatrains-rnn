@@ -22,6 +22,31 @@ The following Python packages must be installed in the Python 3 environment you 
 TensorFlow itself requires some additional setup, especially when using GPUs:
 https://www.tensorflow.org/install/
 
+### Building CPU-optimized TensorFlow
+
+You can get a moderate speedup from CPU-based training by compiling TensorFlow from source. 
+This is optional, and may not work in all cases.
+
+To build and install the very latest:
+
+```bash
+pip3 uninstall tensorflow
+
+# Or latest release of Bazel
+curl -L -o bazel.sh https://github.com/bazelbuild/bazel/releases/download/0.5.2/bazel-0.5.2-without-jdk-installer-linux-x86_64.sh
+bash bazel.sh --user
+export PATH=~/bin:$PATH
+
+git clone https://github.com/tensorflow/tensorflow
+cd tensorflow
+./configure
+#Set Python path to /usr/local/bin/python3 and accept all other defaults
+
+bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
+bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+pip3 install `ls /tmp/tensorflow_pkg/tensorflow*.whl`
+```
+
 ## Running
 
 Edit the configuration parameters at the top of the file as desired, and:
