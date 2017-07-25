@@ -6,7 +6,7 @@
 # Cloudera Data Science Workbench: install tensorflow and keras if not already.
 # Install tensorflow-gpu instead if using GPUs.
 '''
-!pip3 install tensorflow tensorboard keras
+!pip3 install -U tensorflow tensorboard keras
 '''
 
 import math
