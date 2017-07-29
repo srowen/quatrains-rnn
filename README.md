@@ -49,11 +49,7 @@ pip3 install `ls /tmp/tensorflow_pkg/tensorflow*.whl`
 
 ## Running
 
-Edit the configuration parameters at the top of the file as desired, and:
-
-```bash
-python3 quatrains.py
-```
+Edit the configuration parameters at the top of the file as desired, and just run `./quatrains.py`.
 
 ### Running TensorBoard
 

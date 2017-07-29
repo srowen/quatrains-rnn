@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # See also Chapters 6, 8 of "Deep Learning with Python" by Francois Chollet (Manning)
 # https://www.manning.com/books/deep-learning-with-python
 
