@@ -55,6 +55,15 @@ Edit the configuration parameters at the top of the file as desired, and:
 python3 quatrains.py
 ```
 
+### Running TensorBoard
+
+Information about the model training will be written to `logs/` in a format
+that can be read by TensorBoard. To start the server and view the output:
+
+```bash
+python3 -m tensorflow.tensorboard --port 8080 --logdir=logs
+```
+
 ## Output
 
 Output will look something like:

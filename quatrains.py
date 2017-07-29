@@ -4,12 +4,15 @@
 # Cloudera Data Science Workbench: install tensorflow and keras if not already.
 # Install tensorflow-gpu instead if using GPUs.
 '''
-!pip3 install tensorflow tensorboard keras
+!pip3 install -U tensorflow tensorboard keras
 '''
 
 import math
 import numpy as np
+import os
 import random
+import shutil
+
 import tensorflow as tf
 
 from keras import backend as K
@@ -111,14 +114,14 @@ with tf.device(device):
     model.add(Embedding(num_distinct_words + 1, embedding_dim, input_length=phrase_len, name="embedding"))
     # Learn a recurrent model of sequences of words with a Gated Recurrent Unit (GRU)
     model.add(GRU(gru_dim,
-                  name="GRU",
+                  name='GRU',
                   dropout=dropout,
                   recurrent_dropout=dropout,
                   kernel_regularizer=l2(regularization),
                   bias_regularizer=l2(regularization),
                   recurrent_regularizer=l2(regularization)))
     # Predict one of the possible words (or end) with standard dense layer plus softmax activation
-    model.add(Dense(num_distinct_words + 1, name="dense", activation='softmax'))
+    model.add(Dense(num_distinct_words + 1, name='dense', activation='softmax'))
 
 # Actually set the weights for the embedding
 # Note that this is not 'frozen' and is left trainable
@@ -147,16 +150,25 @@ next_word_embeddings = np.array(next_word_encodings)
 next_word_embeddings_train = next_word_embeddings[train_indices]
 next_word_embeddings_val = next_word_embeddings[val_indices]
 
+logs_dir='logs'
+if os.path.exists(logs_dir):
+    shutil.rmtree(logs_dir)
+
 for run in range(0, 1000):
     print('Run {}'.format(run))
 
-    tensorboard = TensorBoard(log_dir="logs/{}".format(run), write_graph=True, histogram_freq=5)
+    epochs_per_run = 5
+    tensorboard = TensorBoard(log_dir='{}/{}'.format(logs_dir, run), 
+                              write_graph=True, 
+                              histogram_freq=epochs_per_run,
+                              embeddings_freq=epochs_per_run,
+                              embeddings_layer_names='embedding')
 
     # Train for just a few epochs
     model.fit(phrases_train,
               next_word_embeddings_train,
               class_weight=word_index_weights,
-              epochs=5,
+              epochs=epochs_per_run,
               batch_size=batch_size,
               shuffle=True,
               validation_data=(phrases_val, next_word_embeddings_val),
@@ -193,6 +205,6 @@ for run in range(0, 1000):
                 random_phrase = np.append(random_phrase[1:], pred_next_word_index)
 
         # Print a generated snippet for this run
-        print(" ".join(emitted_quatrain))
+        print(' '.join(emitted_quatrain))
 
     print()
