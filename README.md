@@ -15,7 +15,7 @@ unzip glove.6B.zip
 The following Python packages must be installed in the Python 3 environment you use:
 
 - `tensorflow` (or `tensorflow-gpu`)
-- `tensorboard`
+- `tensorflow-tensorboard`
 - `keras`
 - `numpy`
 
@@ -33,7 +33,7 @@ To build and install the very latest:
 pip3 uninstall tensorflow
 
 # Or latest release of Bazel
-curl -L -o bazel.sh https://github.com/bazelbuild/bazel/releases/download/0.5.2/bazel-0.5.2-without-jdk-installer-linux-x86_64.sh
+curl -L -o bazel.sh https://github.com/bazelbuild/bazel/releases/download/0.5.4/bazel-0.5.4-without-jdk-installer-linux-x86_64.sh
 bash bazel.sh --user
 export PATH=~/bin:$PATH
 
@@ -57,7 +57,7 @@ Information about the model training will be written to `logs/` in a format
 that can be read by TensorBoard. To start the server and view the output:
 
 ```bash
-python3 -m tensorflow.tensorboard --port 8080 --logdir=logs
+tensorboard --port 8080 --logdir=logs
 ```
 
 ## Output

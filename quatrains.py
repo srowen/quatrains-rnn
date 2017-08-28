@@ -9,6 +9,9 @@
 !pip3 install -U tensorflow tensorflow-tensorboard keras
 '''
 
+# Note: run Tensorboard if desired with:
+# tensorboard --port 8080 --logdir=logs
+
 import math
 import numpy as np
 import os
