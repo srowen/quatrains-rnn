@@ -1,4 +1,4 @@
+/.*
+!.gitignore
 glove.6B.*
-.idea/
-logs*
-
+logs/
